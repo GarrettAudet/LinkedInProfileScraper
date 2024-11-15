@@ -5,7 +5,12 @@
     "description": "Scrapes LinkedIn profile data and generates a personalized message.",
     "permissions": [
         "activeTab",
-        "scripting"
+        "scripting",
+        "clipboardWrite",
+        "clipboardRead"
+    ],
+    "host_permissions": [
+        "https://api.gemini.com/*"
     ],
     "content_scripts": [
         {
