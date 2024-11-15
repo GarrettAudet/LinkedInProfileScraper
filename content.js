@@ -21,29 +21,37 @@ function scrapeProfileData() {
 
         // Extract Professional History 
         let experiences = [];
-        let experienceElements =  document.querySelectorAll('[data-view-name="profile-component-entity"]');
 
-        // Extract Attributes for Each Professional History 
-        experienceElements.forEach(exp => {
+        // Identify the Closest Section with Sub-Element of Experience
+        let experienceSection = document.querySelector('div[id="experience"]').closest('section');
 
-            // Job title might be the first `span` element within the container
-            let jobTitle = exp.querySelector('.t-bold span')?.innerText || "Job title not found";
-            
-            // Company might be in a div within the container; use `.children` to navigate
-            let company = exp.querySelector('.t-normal span')?.innerText || "Company not found";
-            
-            // Date range might be within a span or div with specific ordering; adjust index if needed
-            let jobDescription = exp.querySelector('.pvs-entity__sub-components span')?.innerText || "Job description not found";
-            
-            // Append to List
-            experiences.push({
-                jobTitle: jobTitle,
-                company: company,
-                description: jobDescription
+        // Extract Professional History 
+        if (experienceSection) {
+
+            // Extract Work History from Profile
+            let experienceElements = experienceSection.querySelectorAll('[data-view-name="profile-component-entity"]');
+
+            // Extract Attributes for Each Job
+            experienceElements.forEach(exp => {
+                console.log("Processing experience item"); // Debugging line
+
+                // Extract Job Title
+                let jobTitle = exp.querySelector('.t-bold span')?.innerText || "Job title not found"; // Note the dot before 't-bold'
+                
+                // Extract Company Name
+                let company = exp.querySelector('.t-normal span')?.innerText || "Company not found"; // Note the dot before 't-normal'
+                
+                // Extract Job Description
+                let jobDescription = exp.querySelector('.pvs-entity__sub-components span')?.innerText || "Job description not found"; // Note the dot before 'pvs-entity__sub-components'
+                
+                // Append to List
+                experiences.push({
+                    jobTitle: jobTitle,
+                    company: company,
+                    description: jobDescription
+                });
             });
-        });
-
-        console.log(experiences);
+        }
 
         // Format data
         let profileData = {
