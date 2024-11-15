@@ -10,8 +10,13 @@
         "clipboardRead"
     ],
     "host_permissions": [
-        "https://api.gemini.com/*"
+        "*://www.linkedin.com/in/*",
+        "*://generativelanguage.googleapis.com/*"
     ],
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
     "content_scripts": [
         {
             "matches": [
