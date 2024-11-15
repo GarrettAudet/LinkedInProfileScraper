@@ -31,7 +31,7 @@ function scrapeProfileData() {
 
             // Extract Attributes for Each Job
             experienceElements.forEach(exp => {
-                
+
                 // Extract Job Title
                 let jobTitle = exp.querySelector('.t-bold span')?.innerText || "Job title not found";
 

@@ -2,57 +2,40 @@ import config from './config.js';
 const apiKey = config.geminiApiKey;
 
 async function generateMessageWithGemini(profileData) {
+    console.log("Generate Message is Recieving Data");
     const prompt = `Generate a LinkedIn connection message based on the following profile data:
     Name: ${profileData.name}
     Headline: ${profileData.headline}
     About Section: ${profileData.aboutSection}
-    First Experience: Job Title - ${profileData.experience[0]?.jobTitle}, Company - ${profileData.experience[0]?.company}, Description - ${profileData.experience[0]?.description}
-    
-    Write a friendly and professional message to connect with them.`;
+    First Experience: Job Title - ${profileData.experience[0]?.jobTitle}, Company - ${profileData.experience[0]?.company}, Description - ${profileData.experience[0]?.description}`;
 
-    // Replace with the actual Gemini endpoint URL
-    const response = await fetch("https://api.gemini.com/v1/generate", {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            model: "text-generation",  // Adjust this if Gemini requires a specific model name
-            prompt: prompt,
-            max_tokens: 150
+            contents: [
+                {
+                    parts: [
+                        { text: prompt }
+                    ]
+                }
+            ]
         })
     });
 
     const data = await response.json();
     const message = data.choices ? data.choices[0].text.trim() : "Could not generate message.";
 
-    // Display the generated message
-    prompt("Generated Message:", message);
+    // Log the generated message
+    console.log("Generated Message:", message);
 
-    // Optionally copy to clipboard
-    navigator.clipboard.writeText(message).then(() => {
-        alert("Message copied to clipboard!");
-    }).catch(err => {
-        console.error("Could not copy text: ", err);
+    // Optionally send the generated message back to the content script
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, { type: "generatedMessage", message: message });
     });
 }
 
-// Main scraping function
-function scrapeProfileData() {
-    if (window.location.href.includes('linkedin.com/in/')) {
-        // Extract profile data as before...
-        let profileData = {
-            name: name,
-            headline: headline,
-            aboutSection: aboutSection,
-            experience: experiences
-        };
-
-        // Call the Gemini function to generate the message
-        generateMessageWithGemini(profileData);
-    } else {
-        alert("This script only works on LinkedIn profile pages.");
-    }
-}
+export default generateMessageWithGemini;
 
