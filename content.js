@@ -11,7 +11,6 @@ document.addEventListener('keydown', function(event) {
 function scrapeProfileData() {
     // Check that the page is a LinkedIn profile
     if (window.location.href.includes('linkedin.com/in/')) {
-
         // Extract High-Level Information
         let name = document.querySelector('.text-heading-xlarge')?.innerText || "Name not found";
         let headline = document.querySelector('.text-body-medium')?.innerText || "Headline not found";
@@ -19,15 +18,14 @@ function scrapeProfileData() {
         // Extract About Content
         let aboutSection = document.querySelector('.inline-show-more-text--is-collapsed span')?.innerText || "About section not found";
 
-        // Extract Professional History 
+        // Extract Professional History
         let experiences = [];
 
         // Identify the Closest Section with Sub-Element of Experience
-        let experienceSection = document.querySelector('div[id="experience"]').closest('section');
+        let experienceSection = document.querySelector('div[id="experience"]')?.closest('section');
 
-        // Extract Professional History 
+        // Extract Professional History
         if (experienceSection) {
-
             // Extract Work History from Profile
             let experienceElements = experienceSection.querySelectorAll('[data-view-name="profile-component-entity"]');
 
@@ -36,14 +34,14 @@ function scrapeProfileData() {
                 console.log("Processing experience item"); // Debugging line
 
                 // Extract Job Title
-                let jobTitle = exp.querySelector('.t-bold span')?.innerText || "Job title not found"; // Note the dot before 't-bold'
-                
+                let jobTitle = exp.querySelector('.t-bold span')?.innerText || "Job title not found";
+
                 // Extract Company Name
-                let company = exp.querySelector('.t-normal span')?.innerText || "Company not found"; // Note the dot before 't-normal'
-                
+                let company = exp.querySelector('.t-normal span')?.innerText || "Company not found";
+
                 // Extract Job Description
-                let jobDescription = exp.querySelector('.pvs-entity__sub-components span')?.innerText || "Job description not found"; // Note the dot before 'pvs-entity__sub-components'
-                
+                let jobDescription = exp.querySelector('.pvs-entity__sub-components span')?.innerText || "Job description not found";
+
                 // Append to List
                 experiences.push({
                     jobTitle: jobTitle,
@@ -61,8 +59,12 @@ function scrapeProfileData() {
             experience: experiences
         };
 
+        // Pass to Background Script
+        chrome.runtime.sendMessage({ type: "generateMessage", profileData: profileData });
+
         // Display extracted data (for testing purposes)
-        alert(`Profile Data:\nName: ${profileData.name}\nHeadline: ${profileData.headline}\nAbout: ${profileData.aboutSection}\nWork Experience: ${JSON.stringify(profileData.experience, null, 2)}`);    } else {
+        alert(`Profile Data:\nName: ${profileData.name}\nHeadline: ${profileData.headline}\nAbout: ${profileData.aboutSection}\nWork Experience: ${JSON.stringify(profileData.experience, null, 2)}`);
+    } else {
         alert("This script only works on LinkedIn profile pages.");
     }
 }

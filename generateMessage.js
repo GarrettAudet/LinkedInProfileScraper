@@ -1,5 +1,7 @@
+import config from './config.js';
+const apiKey = config.geminiApiKey;
+
 async function generateMessageWithGemini(profileData) {
-    const apiKey = 'YOUR_GEMINI_API_KEY'; // Replace with your actual Gemini API key
     const prompt = `Generate a LinkedIn connection message based on the following profile data:
     Name: ${profileData.name}
     Headline: ${profileData.headline}
