@@ -3,11 +3,20 @@ const apiKey = config.geminiApiKey;
 
 async function generateMessageWithGemini(profileData) {
     console.log("Generate Message is Recieving Data");
-    const prompt = `Generate a LinkedIn connection message based on the following profile data:
-    Name: ${profileData.name}
+    let prompt = `Generate a LinkedIn connection message based on the following profile data:
+    My Name: Garrett Audet
+    Key Principles: Personalize with a unique detail, max 300 characters, show value, ask one specific question, avoid immediate meeting requests, follow up politely once, and use a professional yet conversational tone.
+    Desired Connector Name: ${profileData.name}
     Headline: ${profileData.headline}
     About Section: ${profileData.aboutSection}
-    First Experience: Job Title - ${profileData.experience[0]?.jobTitle}, Company - ${profileData.experience[0]?.company}, Description - ${profileData.experience[0]?.description}`;
+    Work Experience:\n `;
+
+    // Add each job experience to the prompt
+    profileData.experience.forEach((job, index) => {
+        prompt += `\nExperience ${index + 1}: Job Title - ${job.jobTitle}, Company - ${job.company}, Description - ${job.jobDescription}`;
+    });
+
+    console.log("Generated Prompt:", prompt);
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
         method: "POST",
