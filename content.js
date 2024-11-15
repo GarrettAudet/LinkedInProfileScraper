@@ -12,29 +12,26 @@ function scrapeProfileData() {
     // Check that the page is a LinkedIn profile
     if (window.location.href.includes('linkedin.com/in/')) {
 
-        // Extract profile information
+        // Extract High-Level Information
         let name = document.querySelector('.text-heading-xlarge')?.innerText || "Name not found";
         let headline = document.querySelector('.text-body-medium')?.innerText || "Headline not found";
 
-        // Target the section with the specific ID for the "About" section
-        // Use relative positioning to find the "About" section after the headline
-        // Attempt to find the "About" section using different approaches
+        // Extract About Content
+        let aboutSection = document.querySelector('.inline-show-more-text--is-collapsed span')?.innerText || "About section not found";
 
-        let aboutSection = "test";
-        console.log(aboutSection);
-
-        let bio = document.querySelector('.pv-about-section')?.innerText || "Bio not found";
+        // Extract Work Experience 
+        let experiences = [];
+        let experienceElements = document.querySelectorAll('.experience-item'); 
 
         // Format data
         let profileData = {
             name: name,
             headline: headline,
-            bio: bio,
             aboutSection: aboutSection
         };
 
         // Display extracted data (for testing purposes)
-        alert(`Profile Data:\nName: ${profileData.name}\nHeadline: ${profileData.headline}\nBio: ${profileData.bio}\nBio: ${profileData.aboutSection}`);
+        alert(`Profile Data:\nName: ${profileData.name}\nHeadline: ${profileData.headline}\nAbout: ${profileData.aboutSection}`);
     } else {
         alert("This script only works on LinkedIn profile pages.");
     }
