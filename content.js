@@ -39,8 +39,8 @@ function scrapeProfileData() {
                 let company = exp.querySelector('.t-normal span')?.innerText || "Company not found";
 
                 // Extract Job Description
-                let jobDescription = exp.querySelector('.pvs-entity__sub-components span')?.innerText || "Job description not found";
-
+                let jobDescription = exp.querySelector('.inline-show-more-text--is-collapsed-with-line-clamp span')?.innerText || "Job description not found";
+                
                 // Append to List
                 experiences.push({
                     jobTitle: jobTitle,
@@ -59,11 +59,24 @@ function scrapeProfileData() {
         };
 
         // Pass to Background Script
-        chrome.runtime.sendMessage({ type: "generateMessage", profileData: profileData });
+        chrome.runtime.sendMessage({ type: "generateMessage", profileData: profileData }, (response) => {
+            if (chrome.runtime.lastError) {
+                console.error("Error sending message:", chrome.runtime.lastError);
+            } else {
+                console.log("Message sent successfully:", response);
+            }
+        });
 
-        // Display extracted data (for testing purposes)
-        alert(`Profile Data:\nName: ${profileData.name}\nHeadline: ${profileData.headline}\nAbout: ${profileData.aboutSection}\nWork Experience: ${JSON.stringify(profileData.experience, null, 2)}`);
     } else {
         alert("This script only works on LinkedIn profile pages.");
     }
 }
+
+// Listener to receive the generated message from background.js
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === "generatedMessage") {
+        console.log("Received generated message:", message.message);
+        // Display the generated message in an alert or another way you prefer
+        alert(`Generated Message: ${message.message}`);
+    }
+});
