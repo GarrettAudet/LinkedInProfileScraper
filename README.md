@@ -1,6 +1,6 @@
 # **LinkedIn Profile Scraper**
 
-A Chrome extension that automates LinkedIn profile data extraction and generates personalized connection messages using AI. This tool is designed to enhance professional networking by providing tailored, conversational connection messages effortlessly.
+A Chrome extension that automates LinkedIn profile data extraction and generates personalized connection messages using AI. This tool provides tailored, conversational connection messages based on professional overlap. 
 
 ## **🚀 Features**
 - **LinkedIn Profile Scraping**: Extracts details such as:
