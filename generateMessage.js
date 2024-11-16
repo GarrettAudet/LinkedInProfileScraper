@@ -27,7 +27,8 @@ async function generateMessageWithGemini(profileData) {
         - Tone: Professional yet conversational.
         - Length: Max 300 characters.
         - Key Principles: Personalize with a unique detail from their profile (e.g., shared background, a specific project they worked on). Demonstrate value by explaining why their input is valuable to me.
-        - Example Structure:
+        - Exact Message Format:
+        - Specific Question Should be focused on understanding challenges in policy workflows that they've experienced.
         Hi [Recipient's Name],
 
         I noticed your work as [specific job title or company] and was intrigued by your [specific expertise]. I’m currently exploring [specific topic] and would love to hear your thoughts on [specific question]. Would you be open to a brief chat?
