@@ -1,9 +1,11 @@
+// Import API Key
 import config from './config.js';
 const apiKey = config.geminiApiKey;
 
+// Function to Generate Message
 async function generateMessageWithGemini(profileData) {
-    console.log("Generate Message is Receiving Data");
-    
+
+    // Generate Prompt
     let prompt = `Generate a LinkedIn connection message based on the following profile data:
     My Name: Garrett Audet
     Key Background Characteristics of Mine: Software Engineer, Ex-Consultant, Queens University Graduate, Ex-Military Intelligence
@@ -13,10 +15,12 @@ async function generateMessageWithGemini(profileData) {
     About Section: ${profileData.aboutSection}
     Work Experience:\n `;
 
+    // Append Work Experience 
     profileData.experience.forEach((job, index) => {
         prompt += `\nExperience ${index + 1}: Job Title - ${job.jobTitle}, Company - ${job.company}, Description - ${job.description}`;
     });
 
+    // Attempt API Query 
     try {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
             method: "POST",
@@ -34,23 +38,27 @@ async function generateMessageWithGemini(profileData) {
             })
         });
 
-        console.log("Response Status:", response.status);
+        // Log Errors 
         if (!response.ok) {
             console.error("Failed to fetch data from API:", await response.text());
             throw new Error(`API request failed with status ${response.status}`);
         }
 
+        // Await Response for API
         const data = await response.json();
         console.log("API Data:", JSON.stringify(data, null, 2));
 
+        // Append Message 
         const message = (data.candidates && data.candidates.length > 0 && 
             data.candidates[0].content && data.candidates[0].content.parts &&
             data.candidates[0].content.parts.length > 0 && typeof data.candidates[0].content.parts[0].text === 'string')
             ? data.candidates[0].content.parts[0].text.trim()
             : "Could not generate message.";
         
+        // Log Message
         console.log("Generated Message:", message);
 
+        // Send Message to Background Script
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             chrome.tabs.sendMessage(tabs[0].id, { type: "generatedMessage", message: message });
         });
