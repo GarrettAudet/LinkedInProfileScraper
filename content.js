@@ -59,13 +59,16 @@ function scrapeProfileData() {
         };
 
         // Pass to Background Script
-        chrome.runtime.sendMessage({ type: "generateMessage", profileData: profileData }, (response) => {
-            if (chrome.runtime.lastError) {
-                console.error("Error sending message:", chrome.runtime.lastError);
-            } else {
-                console.log("Message sent successfully:", response);
+        chrome.runtime.sendMessage(
+            { type: "generateMessage", profileData: profileData },
+            (response) => {
+                if (chrome.runtime.lastError) {
+                    console.error("Error sending message:", chrome.runtime.lastError.message);
+                } else {
+                    console.log("Message sent successfully, response:", response);
+                }
             }
-        });
+        );
 
     } else {
         alert("This script only works on LinkedIn profile pages.");
