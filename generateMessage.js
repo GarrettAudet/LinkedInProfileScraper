@@ -71,7 +71,7 @@ async function generateMessageWithGemini(profileData) {
             : "Could not generate message.";
         
         // Log Message
-        console.log("Generated Message:", message);
+        // console.log("Generated Message:", message);
 
         // Send Message to Background Script
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
