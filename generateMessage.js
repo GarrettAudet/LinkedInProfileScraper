@@ -6,19 +6,34 @@ const apiKey = config.geminiApiKey;
 async function generateMessageWithGemini(profileData) {
 
     // Generate Prompt
-    let prompt = `Generate a LinkedIn connection message based on the following profile data:
-    My Name: Garrett Audet
-    Key Background Characteristics of Mine: Software Engineer, Ex-Consultant, Queens University Graduate, Ex-Military Intelligence
-    Key Principles: Personalize with a unique detail, max 300 characters, show value, state that I'm hoping to learn more about public policy workflows, avoid immediate meeting requests, and use a professional yet conversational tone.
-    Person to Craft Message for Name: ${profileData.name}
-    Headline: ${profileData.headline}
-    About Section: ${profileData.aboutSection}
-    Work Experience:\n `;
+    let prompt = 
+        `Generate a LinkedIn connection message based on the following profile data:
+        My Name: Garrett Audet
+        My Key Background Info: Software Developer, Ex-Consultant, Ex-Military Intelligence, exploring public policy workflows and the role of technology in supporting them.
+        My Goal: Understand challenges in policy workflows and explore opportunities for collaboration or shared learning.
+        Key Principles: Personalize with a unique detail, max 300 characters, show value, state that I'm hoping to learn more about public policy workflows, avoid immediate meeting requests, and use a professional yet conversational tone.
+        Recipient's Name: ${profileData.name}
+        Recipient's Headline: ${profileData.headline}
+        About Recipient: ${profileData.aboutSection}
+        Recipient's Work Experience:\n `;
 
     // Append Work Experience 
     profileData.experience.forEach((job, index) => {
         prompt += `\nExperience ${index + 1}: Job Title - ${job.jobTitle}, Company - ${job.company}, Description - ${job.description}`;
     });
+
+    // Further Prompt Structure
+    prompt += `
+        - Tone: Professional yet conversational.
+        - Length: Max 300 characters.
+        - Key Principles: Personalize with a unique detail from their profile (e.g., shared background, a specific project they worked on). Demonstrate value by explaining why their input is valuable to me.
+        - Example Structure:
+        Hi [Recipient's Name],
+
+        I noticed your work as [specific job title or company] and was intrigued by your [specific expertise]. I’m currently exploring [specific topic] and would love to hear your thoughts on [specific question]. Would you be open to a brief chat?
+
+        Best,
+        Garrett`;
 
     // Attempt API Query 
     try {
