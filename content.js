@@ -3,7 +3,7 @@ document.addEventListener('keydown', function(event) {
     // Listen for F5 key press
     if (event.key === 'F11') {
         event.preventDefault(); // Prevent default reload
-        setTimeout(scrapeProfileData, 2000); // Add a 2-second delay to wait for content to load
+        setTimeout(scrapeProfileData, 15000); // Add a 2-second delay to wait for content to load
     }
 
 });
