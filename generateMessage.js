@@ -29,9 +29,10 @@ async function generateMessageWithGemini(profileData) {
         - Key Principles: Personalize with a unique detail from their profile (e.g., shared background, a specific project they worked on). Demonstrate value by explaining why their input is valuable to me.
         - Exact Message Format:
         - Specific Question Should be focused on understanding challenges in policy workflows that they've experienced.
+        
         Hi [Recipient's Name],
 
-        I noticed your work as [specific job title or company] and was intrigued by your [specific expertise]. I’m currently exploring [specific topic] and would love to hear your thoughts on [specific question]. Would you be open to a brief chat?
+        I hope you're doing well! I'm a software developer and veteran exploring how technology can improve policy research. Your [specific expertise] really stood out, and i'd greatly value your feedback given your [connection point]. Would you be open to a quick chat? 
 
         Best,
         Garrett`;
@@ -73,6 +74,11 @@ async function generateMessageWithGemini(profileData) {
         
         // Log Message
         // console.log("Generated Message:", message);
+
+        // Copy to Clipboard
+        navigator.clipboard.writeText(message)
+        .then(() => console.log('Message copied to clipboard!'))
+        .catch(err => console.error('Could not copy text: ', err));
 
         // Send Message to Background Script
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
