@@ -8,7 +8,6 @@ A Chrome extension that automates LinkedIn profile data extraction for a given u
   - About Section  
   - Work Experience  
 - **AI-Powered Message Generation**: Uses Google Gemini AI API to generate custom connection messages based on the extracted profile data.  
-- **User-Friendly**: No prior technical knowledge required to use the extension.  
 
 ## **🛠️ Tech Stack**
 - **Chrome Extension (Manifest v3)**: Built with modern Chrome extension standards.  
